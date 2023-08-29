@@ -6,7 +6,7 @@
     public static $host = '127.0.0.1';
     public static $con;
 
-    public static function connect() {
+    public static function connect(): PDO {
         try{
             if(self::$con == null){
                 self::$con = new PDO("mysql:host=".self::$host.";dbname=".self::$dbname.";", self::$user, '');
@@ -19,21 +19,21 @@
         return self::$con;
     }
 
-    public static function category () {
+    public static function category (): array {
         $db = self::connect()->query('SELECT name,id FROM category');
         $db->execute();
         $data = $db->fetchAll();
         return $data;
     }
 
-    private static function getName() {
+    private static function getName(){
         if(isset($_POST['nom']) && !empty($_POST['nom'])){
           return $_POST['nom'];
         }
       
     }
 
-    private static function getOpt() {
+    private static function getOpt(){
         if(isset($_POST['opt']) && !empty($_POST['opt'])){
           return (int)$_POST['opt'];
         }
@@ -46,7 +46,7 @@
         return $bd;
     }
 
-    public static function selectAllWithCategory() {
+    public static function selectAllWithCategory(): array {
         $req = self::connect()->prepare('SELECT product.name AS produit, category.name As categorie FROM product LEFT JOIN category ON product.category = category.id');
         $req->execute();
         $data = $req->fetchAll();
